@@ -1,6 +1,10 @@
 PacedWorkStream
 ===============
 
+[![NPM Version][npm-image]][npm-url]
+[![Build Status](https://travis-ci.org/tilfin/paced-work-stream.svg?branch=master)](https://travis-ci.org/tilfin/paced-work-stream)
+[![Coverage Status](https://coveralls.io/repos/github/tilfin/paced-work-stream/badge.svg?branch=master)](https://coveralls.io/github/tilfin/paced-work-stream?branch=master)
+
 Node.js transform stream working at constant pace and concurrent for object mode
 
 ## Features
@@ -72,6 +76,9 @@ $ node example.js
 { workDone: 5 }
 ```
 
-### License
+## License
 
-MIT
+  [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/paced-work-stream.svg
+[npm-url]: https://npmjs.org/package/paced-work-stream
