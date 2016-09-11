@@ -1,0 +1,31 @@
+{
+  "name": "paced-work-stream",
+  "version": "0.1.0",
+  "description": "Node.js stream working at constant pace and concurrent",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tilfin/paced-work-stream.git"
+  },
+  "keywords": [
+    "pace",
+    "work",
+    "process",
+    "stream",
+    "concurrent",
+    "constant"
+  ],
+  "author": "Toshimitsu Takahashi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tilfin/paced-work-stream/issues"
+  },
+  "homepage": "https://github.com/tilfin/paced-work-stream#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
+  }
+}
