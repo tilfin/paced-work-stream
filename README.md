@@ -9,7 +9,7 @@ Node.js transform stream working at constant pace and concurrent for object mode
 * Specify concurrent workers (opts.concurrency)
 * Fire `done` event after when all workers have finished asynchrous -processes
 * Counting tag system to call `this.countTag(_tag_)` in `_workPromise`, you can get summarized results `tagCounts` grouped by tag.
-* Node.js 4.2 or later
+* Node.js 4.3 or later
 
 ## Targets
 

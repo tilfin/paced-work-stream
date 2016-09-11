@@ -1,10 +1,11 @@
 {
   "name": "paced-work-stream",
-  "version": "0.1.0",
+  "version": "0.8.0",
   "description": "Node.js stream working at constant pace and concurrent",
   "main": "lib/main.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "./node_modules/.bin/istanbul cover _mocha -r test/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,10 @@
   "homepage": "https://github.com/tilfin/paced-work-stream#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.0.2"
+    "event-stream": "^3.3.4",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
+    "coveralls": "^2.11.12",
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
