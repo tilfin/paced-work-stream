@@ -12,7 +12,7 @@ Node.js transform stream working at constant pace and concurrent for object mode
 * Specify work time at once (opts.workMS)
 * Specify concurrent workers (opts.concurrency)
 * Fire `done` event after when all workers have finished asynchrous -processes
-* Counting tag system to call `this.countTag(_tag_)` in `_workPromise`, you can get summarized results `tagCounts` grouped by tag.
+* Counting tag system to call `this.countTag(<tag>)` in `_workPromise`, you can get summarized results `tagCounts` grouped by tag.
 * Node.js 4.3 or later
 
 ## Targets
@@ -27,6 +27,17 @@ $ npm install -save paced-work-stream
 ```
 
 ## How to Use
+
+### Creating a PacedWorkStream
+
+```
+new PacedWorkStream(opts, workPromise);
+```
+
+* `opts.concurrency` is the number of concurrent processes.
+* `opts.workMS` is milliseconds of work time at once that contains process-time and wait-time.
+* `opts.highWaterMark` is maximum object buffer size. If you use flow mode, you should set it the number of source items.
+* `workPromise` is `function(item)` must returns a promise processing the item.
 
 ```javascript
 const es = require('event-stream');
