@@ -35,7 +35,8 @@ const PacedWorkStream = require('paced-work-stream');
 
 const pwStream = new PacedWorkStream({
     concurrency: 2,
-    workMS: 1000
+    workMS: 1000,
+    highWaterMark: 5
   }, function(item) {
     console.log(new Date().toISOString(), 'Begin', item);
 
@@ -58,6 +59,7 @@ reader.pipe(pwStream);
 ```
 
 * Pay attention to handling `done` event to get last `tagCounts` because workers haven't processed items on `finish` event.
+* If you flow source stream which has a lot of data into a PacedWorkStream, set `highWaterMark` enough to a large number.
 
 ### Console output
 
