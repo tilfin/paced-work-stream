@@ -31,6 +31,33 @@ describe('PacedWorkStream', () => {
       reader.pipe(pwStream);
     });
 
+    it('raises done event with workPromise returns a function to return Promise', (done) => {
+      const pwStream = new PacedWorkStream({
+          concurrency: 2,
+          workMS: 0
+        }, function(item) {
+          const self = this;
+          return function() {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  self.countTag('workDone');
+                  resolve(item);
+                }, 20);
+              })
+          };
+        })
+        .on('done', function() {
+          assert.deepEqual(this.tagCounts, { workDone: 5 });
+          done();
+        }).on('error', (err) => {
+          assert.ifError(err);
+          done();
+        });
+
+      const reader = es.readArray([11, 12, 21, 22, 31])
+      reader.pipe(pwStream);
+    });
+
     it('raises done event with fraction', (done) => {
       const pwStream = new PacedWorkStream({
           concurrency: 2,
