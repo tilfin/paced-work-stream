@@ -41,7 +41,7 @@ new PacedWorkStream(opts, workPromise);
 
 ```javascript
 const es = require('event-stream');
-
+const devnull = require('dev-null');
 const PacedWorkStream = require('paced-work-stream');
 
 const pwStream = new PacedWorkStream({
@@ -66,11 +66,11 @@ const pwStream = new PacedWorkStream({
   });
 
 const reader = es.readArray([11, 12, 21, 22, 31])
-reader.pipe(pwStream);
+reader.pipe(pwStream).pipe(devnull({ objectMode: true }));
 ```
 
 * Pay attention to handling `done` event to get last `tagCounts` because workers haven't processed items on `finish` event.
-* If you flow source stream which has a lot of data into a PacedWorkStream, set `highWaterMark` enough to a large number.
+* If stream need not output, the stream must pipe dev-null.
 
 ### Console output
 
