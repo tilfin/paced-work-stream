@@ -89,6 +89,47 @@ $ node example.js
 { workDone: 5 }
 ```
 
+### Using with Promised Lifestream
+
+[Promised Lifestream](https://github.com/tilfin/promised-lifestream) is useful for stream pipeline. The following example gets the same result as above.
+
+```javascript
+'use strict';
+
+const es = require('event-stream');
+const PromisedLife = require('promised-lifestream');
+
+const PacedWorkStream = require('paced-work-stream');
+
+const pacedWorker = new PacedWorkStream({
+    concurrency: 2,
+    workMS: 1000,
+    highWaterMark: 5
+  }, function(item) {
+    console.log(new Date().toISOString(), 'Begin', item);
+
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          this.countTag('workDone');
+          console.log(new Date().toISOString(), 'End', item);
+          resolve();
+        }, 600); // workMS contains the time.
+      })
+  })
+
+PromisedLife([
+  es.readArray([11, 12, 21, 22, 31]),
+  pacedWorker
+])
+.then(() => {
+  console.log(pacedWorker.tagCounts);
+})
+.catch(err => {
+  console.error(err);
+});
+```
+
+
 ## License
 
   [MIT](LICENSE)
