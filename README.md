@@ -10,16 +10,16 @@ Node.js transform stream working at constant pace and concurrent for object mode
 
 ## Features
 
-* Specify work time at once (opts.workMS)
-* Specify concurrent workers (opts.concurrency)
-* Fire `done` event after when all workers have finished asynchrous -processes
+* Work time at once can be specified. (workMS option)
+* Concurrent workers can be specified. (concurrency option)
+* Fires `done` event after when all workers have finished asynchrous -processes
 * Counting tag system to call `this.countTag(<tag>)` in `_workPromise`, you can get summarized results `tagCounts` grouped by tag.
 * Node.js 4.3 or later
 
 ## Targets
 
-* API client needs to handle the rate-limit
-* DB client needs to handle the read/write capacity units like AWS DynamoDB
+* API client that needs to handle the rate-limit
+* DB client that needs to handle the read/write capacity units like AWS DynamoDB
 
 ## Install
 
@@ -29,16 +29,36 @@ $ npm install -save paced-work-stream
 
 ## How to Use
 
-### Creating a PacedWorkStream
+### Create a PacedWorkStream
+
+**new PacedWorkStream(options, workPromise)**
+
+* `options` `<Object>`
+  * `concurrency` is the number of concurrent processes.
+  * `workMS` is milliseconds of work time at once that contains process-time and wait-time.
+  * `highWaterMark` is maximum object buffer size. If you use flow mode, you should set it at least concurrency.
+* `workPromise` is `function(item):` must return a _Promise_ processing the _item_ or a _Function_ that returns a _Promise_.
+
+### Create subclass that extends PacedWorkStream
+
+* `super(options)` must be called in the constructor.
+* `_workPromise` method must be overrided and return a _Promise_ processing the _item_ or a _Function_ that returns a _Promise_.
 
 ```
-new PacedWorkStream(opts, workPromise);
+class MyWorkStream extends PacedWorkStream {
+  constructor(options) {
+    super(options);
+  }
+  _workPromise(item) {
+    return () => {
+      this.countTag(item.tag);
+      return Promise.resolve(item.value);
+    };
+  }
+}
 ```
 
-* `opts.concurrency` is the number of concurrent processes.
-* `opts.workMS` is milliseconds of work time at once that contains process-time and wait-time.
-* `opts.highWaterMark` is maximum object buffer size. If you use flow mode, you should set it the number of source items.
-* `workPromise` is `function(item)` must returns a promise processing the item.
+## Examples
 
 ```javascript
 const es = require('event-stream');
