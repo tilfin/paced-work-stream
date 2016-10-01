@@ -1,13 +1,13 @@
 'use strict';
 
 const es = require('event-stream');
+const devnull = require('dev-null');
 
 const PacedWorkStream = require('../lib/main');
 
 const pwStream = new PacedWorkStream({
     concurrency: 2,
-    workMS: 1000,
-    highWaterMark: 5
+    workMS: 1000
   }, function(item) {
     console.log(new Date().toISOString(), 'Begin', item);
 
@@ -26,4 +26,4 @@ const pwStream = new PacedWorkStream({
   });
 
 const reader = es.readArray([11, 12, 21, 22, 31])
-reader.pipe(pwStream);
+reader.pipe(pwStream).pipe(devnull({ objectMode: true }));
