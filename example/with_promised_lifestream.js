@@ -7,8 +7,7 @@ const PacedWorkStream = require('../lib/main');
 
 const pacedWorker = new PacedWorkStream({
     concurrency: 2,
-    workMS: 1000,
-    highWaterMark: 5
+    workMS: 1000
   }, function(item) {
     console.log(new Date().toISOString(), 'Begin', item);
 
