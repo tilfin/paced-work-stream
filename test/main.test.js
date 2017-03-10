@@ -1,3 +1,5 @@
+'use strict';
+
 const chai = require('chai');
 const assert = chai.assert;
 const es = require('event-stream');
@@ -160,6 +162,40 @@ describe('PacedWorkStream', () => {
         reader
         .pipe(PacedWorkStream({}, WORK_PROMISE))
         .pipe(writer);
+      });
+    });
+
+    context('when delay is true', () => {
+      it('raises done event', (done) => {
+        const times = [];
+        const pwStream = new PacedWorkStream({
+            concurrency: 4,
+            workMS: 200,
+            delay: true
+          }, function(item) {
+            return () => {
+              this.countTag('foo', 3);
+              times.push(new Date().getTime());
+              return Promise.resolve(true);
+            };
+          })
+          .on('done', function() {
+            assert.deepEqual(this.tagCounts, { foo: 15 });
+            for (let i = times.length - 1; i > 0; i--) {
+              assert.isAtLeast(times[i] - times[i-1], 50 * 0.8);
+            }
+            done();
+          }).on('error', (err) => {
+            assert.ifError(err);
+            done();
+          });
+
+        const reader = es.readArray([11, 12, 21, 22, 31])
+        const writer = es.writeArray(function(err, array) {
+          assert.deepEqual(array, [true, true, true, true, true]);
+        });
+
+        reader.pipe(pwStream).pipe(writer);
       });
     });
   });
