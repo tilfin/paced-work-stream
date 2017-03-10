@@ -1,6 +1,6 @@
 {
   "name": "paced-work-stream",
-  "version": "0.10.0",
+  "version": "1.0.0",
   "description": "Node.js stream working at constant pace and concurrent",
   "main": "lib/main.js",
   "scripts": {
