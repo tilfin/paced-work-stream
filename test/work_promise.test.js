@@ -20,11 +20,11 @@ describe('PacedWorkStream', () => {
               Promise.resolve('21-2').then(() => { this.countTag('workDone') })
             ];
           } else {
-            return Promise.resolve(item.toString()).then(() => { this.countTag('workDone') });
+            return Promise.resolve(item.toString()).then(() => { this.countTag('workDone', 2) });
           }
         })
         .on('done', function() {
-          assert.deepEqual(this.tagCounts, { workDone: 6 });
+          assert.deepEqual(this.tagCounts, { workDone: 10 });
           done();
         }).on('error', (err) => {
           assert.ifError(err);
