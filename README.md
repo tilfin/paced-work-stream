@@ -36,9 +36,11 @@ $ npm install -save paced-work-stream
 * `options` `<Object>`
   * `concurrency` is the number of concurrent processes.
   * `workMS` is milliseconds of work time at once that contains process-time and wait-time.
-  * `delay` is enable to start concurrent process in order delay for a time that divided workMS by concurrency, default is false. workPromise must return functions wrap each promise.
+  * `delay` is enable to start concurrent process in order delay for a time that divided workMS by concurrency, default is false. workPromise must return functions wrap each promise. Refer to the following figure for detailed operation pattern.
   * `highWaterMark` is maximum object buffer size. If you use flow mode, you should set it at least concurrency.
 * `workPromise` is `function(item):` must return a _Promise_ processing the _item_ or a _Function_ that returns a _Promise_.
+
+![Delay Figure](https://github.com/tilfin/paced-work-stream/wiki/delay-figure.png)
 
 ### Create subclass that extends PacedWorkStream
 
