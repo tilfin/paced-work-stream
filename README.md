@@ -2,6 +2,7 @@ PacedWorkStream
 ===============
 
 [![NPM Version][npm-image]][npm-url]
+[![Node](https://img.shields.io/node/v/paced-work-stream.svg)]()
 [![Build Status](https://travis-ci.org/tilfin/paced-work-stream.svg?branch=master)](https://travis-ci.org/tilfin/paced-work-stream)
 [![Coverage Status](https://coveralls.io/repos/github/tilfin/paced-work-stream/badge.svg?branch=master)](https://coveralls.io/github/tilfin/paced-work-stream?branch=master)
 [![dependencies Status](https://david-dm.org/tilfin/paced-work-stream/status.svg)](https://david-dm.org/tilfin/paced-work-stream)
@@ -14,7 +15,7 @@ Node.js transform stream working at constant pace and concurrent for object mode
 * Concurrent workers can be specified. (concurrency option)
 * Fires `done` event after when all workers have finished asynchrous -processes
 * Counting tag system to call `this.countTag(<tag>)` in `_workPromise`, you can get summarized results `tagCounts` grouped by tag.
-* Node.js 4.3 or later
+* Node.js 6.10 or later
 
 ## Targets
 
@@ -36,16 +37,18 @@ $ npm install -save paced-work-stream
 * `options` `<Object>`
   * `concurrency` is the number of concurrent processes.
   * `workMS` is milliseconds of work time at once that contains process-time and wait-time.
-  * `delay` is enable to start concurrent process in order delay for a time that divided workMS by concurrency, default is false. workPromise must return functions wrap each promise.
+  * `delay` is enable to start concurrent process in order delay for a time that divided workMS by concurrency, default is false. workPromise must return functions wrap each promise. Refer to the following figure for detailed operation pattern.
   * `highWaterMark` is maximum object buffer size. If you use flow mode, you should set it at least concurrency.
 * `workPromise` is `function(item):` must return a _Promise_ processing the _item_ or a _Function_ that returns a _Promise_.
+
+![Delay Figure](https://github.com/tilfin/paced-work-stream/wiki/delay-figure.png)
 
 ### Create subclass that extends PacedWorkStream
 
 * `super(options)` must be called in the constructor.
 * `_workPromise` method must be overrided and return a _Promise_ processing the _item_ or a _Function_ that returns a _Promise_.
 
-```
+```javascript
 class MyWorkStream extends PacedWorkStream {
   constructor(options) {
     super(options);
